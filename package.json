@@ -1,7 +1,7 @@
 {
   "name": "pig-game",
   "private": true,
-  "homepage": "https://Maria-Cas.github.io/proyecto-pig-game",
+  "homepage": "https://maria-cas.github.io/pig-game/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
