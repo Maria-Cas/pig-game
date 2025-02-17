@@ -60,7 +60,7 @@ const initData = () => {
   imgDice.classList.add("hidden"); //escondemos el dado
   score0.textContent = 0; //variables creadas mas arriba en el dom
   score1.textContent = 0;
-  currentScore0.textContent = 0;// pongo las puntuaciones a cero
+  currentScore0.textContent = 0; // pongo las puntuaciones a cero
   currentScore1.textContent = 0;
 };
 
@@ -91,7 +91,8 @@ function updateCurrentScore(diceNumber) {
     currentScore1.textContent = currentScore;
   }
 }
-function switchPlayer() { // si sacas uno cambia de jugador
+function switchPlayer() {
+  // si sacas uno cambia de jugador
   resetCurrentScore();
   sectionPlayer0.classList.toggle("player--active"); // toggle añade o quita la clase
   sectionPlayer1.classList.toggle("player--active");
@@ -104,8 +105,43 @@ function switchPlayer() { // si sacas uno cambia de jugador
   // }
   activePlayer = activePlayer === 0 ? 1 : 0;
 }
-function resetCurrentScore() { //poner todas las posiciones temporales a cero
-  currentScore = 0;
-  currentScore0.textContent = 0;
-  currentScore1.textContent = 0;
+function resetCurrentScore() {
+  //poner todas las posiciones temporales a cero
+  currentScore = 0;// reinicia la variable a 0
+  currentScore0.textContent = 0; //establece la puntuacion en el DOM del jugador 1
+  currentScore1.textContent = 0; //establece la puntuacion en el DOM del jugador 2
+}
+
+function userHoldsScore() {
+  
+  score[activePlayer] += currentScore; //suma el puntuaje actual al puntuaje total
+
+  // actualiza la puntuacion en el DOM
+  if (activePlayer === 0) {
+    score0.textContent = score[activePlayer]; //si el jugador activo es el 1, mostrar su puntuacion
+  } else {
+    score1.textContent = score[activePlayer]; //si el jugador activo es el 2, mostrar su puntuacion
+  }
+
+  // Comprobar la jugada
+  if (score[activePlayer] >= 100) { //comprueba si el jugador ha alcanazado el 100
+    // Añadir clase ganadora
+    if (activePlayer === 0) {
+      sectionPlayer0.classList.add("player--winner"); //si el jugador 0 es el ganador agrega la clase
+      sectionPlayer0.classList.remove("player--active");// cambia la clase para indicar que no esta activo
+    } else {
+      sectionPlayer1.classList.add("player--winner");//lo mismo de arriba, pero con el otro jugador
+      sectionPlayer1.classList.remove("player--active");
+    }
+
+    // Hide dice
+    imgDice.classList.add("hidden");
+
+    // Desactivar botones
+    btnRoll.disabled = true; //descativa el boton de lanzar dado
+    btnHold.disabled = true; //desactiva el boton de mantener puntuacion
+  } else {
+    // si no hay un ganador, cambia al siguiente
+    switchPlayer();
+  }
 }
