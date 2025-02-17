@@ -28,7 +28,7 @@ document.querySelector("#app").innerHTML = `
 
 //seleccionar DOM elements
 
-//activePLayer -> variable de estado en JS -> JUGADORES
+//activePlayer -> variable de estado en JS -> JUGADORES
 const sectionPlayer0 = document.querySelector(".player--0");
 const sectionPlayer1 = document.querySelector(".player--1");
 
@@ -47,13 +47,13 @@ const btnRoll = document.querySelector(".btn--roll");
 
 const imgDice = document.querySelector(".dice"); //seleccionamos el imagen dado
 
-let score, currentScore, activePLayer;
+let score, currentScore, activePlayer;
 
 //inicializo variables de estado
 const initData = () => {
   score = [0, 0]; //puntuacion definitiva (la acumulada)
   currentScore = 0; //puntuacion actual(cada tirada de dado)
-  activePLayer = 0; //cual es el jugador activo
+  activePlayer = 0; //cual es el jugador activo
 
   //inicializo variables del DOM
 
@@ -96,13 +96,7 @@ function switchPlayer() {
   resetCurrentScore();
   sectionPlayer0.classList.toggle("player--active"); // toggle añade o quita la clase
   sectionPlayer1.classList.toggle("player--active");
-  // if (activePlayer === 0) {
-  //   sectionPlayer0.classList.remove("player--active");
-  //   sectionPlayer1.classList.add("player--active");
-  // } else {
-  //   sectionPlayer1.classList.remove("player--active");
-  //   sectionPlayer0.classList.add("player--active");
-  // }
+  
   activePlayer = activePlayer === 0 ? 1 : 0;
 }
 function resetCurrentScore() {
@@ -144,4 +138,38 @@ function userHoldsScore() {
     // si no hay un ganador, cambia al siguiente
     switchPlayer();
   }
-}
+  }
+
+  function userResetsGame() {
+    // cambia la clase de los jugadores
+    sectionPlayer0.classList.remove('player--winner'); //cambia la clase para quitar el estilo ganador
+    sectionPlayer1.classList.remove('player--winner');
+      
+    // Resetea el jugador activo
+    sectionPlayer0.classList.add('player--active'); //añade la clase para mostrar jugador activo
+    sectionPlayer1.classList.remove('player--active');
+
+    // Reseteo los contadores a 0
+    score0.textContent = 0;
+    score1.textContent = 0;
+    currentScore0.textContent = 0;
+    currentScore1.textContent = 0;
+    score = [0, 0]; // reiniciar los puntuajes de ambos juagdores
+    currentScore = 0; //empieza de nuevo cone la puntuacion temporal
+    activePlayer = 0;
+
+    // Hide dice
+    imgDice.classList.add('hidden');
+
+    // Reseteo los botones
+    btnRoll.disabled = false; //activa el boton de lanzar dado
+    btnHold.disabled = false; //activa el boton de mantener puntuacion
+
+     // Inicializa el juego
+    initData();
+  }  
+
+    // añadir escucha de eventos
+    btnRoll.addEventListener("click", throwDice);
+    btnHold.addEventListener('click', userHoldsScore);
+    btnNew.addEventListener('click', userResetsGame)
